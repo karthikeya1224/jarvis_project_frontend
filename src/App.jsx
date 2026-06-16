@@ -1,6 +1,13 @@
+import RegisterUser from "./Pages/RegisterUser";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+
 const App = () => {
     return(
-        <h1>Expense Tracker</h1>
+       <Router>
+        <Routes>
+            <Route path="/register" element={<RegisterUser/>}/>
+        </Routes>
+       </Router> 
     )
 }
 
