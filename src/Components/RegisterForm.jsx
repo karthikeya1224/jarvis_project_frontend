@@ -114,7 +114,7 @@ const RegisterForm = () => {
             </Typography>
 
             <TextField label="Name" size="small" fullWidth sx={{ color: '#9CA3AF' }} value={name} onChange={(e) => { setName(e.target.value); clearError('name'); }} error={!!errors.name} helperText={errors.name || " "} />
-            <TextField label="Email" type="email" size="small" fullWidth sx={{ color: '#9CA3AF' }} value={email} onChange={(e) => { setEmail(e.target.value); clearError('email'); }} error={!!errors.email} helperText={errors.email || " "} />
+            <TextField label="Email" type="email" name="email" size="small" fullWidth sx={{ color: '#9CA3AF' }} value={email} onChange={(e) => { setEmail(e.target.value); clearError('email'); }} error={!!errors.email} helperText={errors.email || " "} />
             <TextField label="Phone number" type="tel" size="small" sx={{ color: '#9CA3AF' }} fullWidth value={phone} onChange={(e) => { setPhone(e.target.value.replace(/\D/g, '')); clearError('phone'); }} error={!!errors.phone} helperText={errors.phone || " "} />
 
             <TextField
