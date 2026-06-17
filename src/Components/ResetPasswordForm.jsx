@@ -1,11 +1,15 @@
 // src/components/ResetPasswordForm.js
 import { useState } from "react";
-import { Box, Card, TextField, Button, Typography, Link, Container } from '@mui/material';
+import { Box, Card, TextField, Button, Typography, InputAdornment, IconButton, Link, Container } from '@mui/material';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const ResetPasswordForm = () => {
   //State variables for new password, confirm password 
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   //State variable for error messages
   const [resetErrors, setResetErrors] = useState({});
@@ -78,7 +82,7 @@ const ResetPasswordForm = () => {
             required
             fullWidth
             label="New Password"
-            type="password"
+            type={showPassword ? "text" : "password"}
             id="newPassword"
             size="small"
             value={newPassword}
@@ -88,13 +92,24 @@ const ResetPasswordForm = () => {
             }}
             error={!!resetErrors.newPassword}
             helperText={resetErrors.newPassword || " "}
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword((prev) => !prev)} edge="end" size="small">
+                      {showPassword ? <Visibility fontSize="small" /> : <VisibilityOff fontSize="small" />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
           />
           <TextField
             required
             fullWidth
             name="confirmPassword"
             label="Confirm Password"
-            type="password"
+            type={showConfirmPassword ? "text" : "password"}
             id="confirmPassword"
             size="small"
             value={confirmPassword}
@@ -104,6 +119,17 @@ const ResetPasswordForm = () => {
             }}
             error={!!resetErrors.confirmPassword}
             helperText={resetErrors.confirmPassword || " "}
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowConfirmPassword((prev) => !prev)} edge="end" size="small">
+                      {showConfirmPassword ? <Visibility fontSize="small" /> : <VisibilityOff fontSize="small" />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
           />
 
           <Button
