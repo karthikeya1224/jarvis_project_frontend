@@ -2,14 +2,15 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import { GoogleOAuthProvider } from '@react-oauth/google'
-
+import React from "react";
+import ReactDOM from "react-dom/client";
 import './index.css'
 import '@fontsource/inter/300.css'
 import '@fontsource/inter/400.css'
 import '@fontsource/inter/500.css'
 import '@fontsource/inter/700.css'
 import App from './App.jsx'
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const theme = createTheme({
   typography: {
