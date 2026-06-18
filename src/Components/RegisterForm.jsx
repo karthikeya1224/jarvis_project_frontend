@@ -108,7 +108,7 @@ const RegisterForm = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.06)',
-                borderRadius: '16px',
+                borderRadius: {xs: 0, sm: '16px'},
                 padding: { xs: 3, sm: 4 },
                 width: '100%',
                 maxWidth: 400,
@@ -124,8 +124,8 @@ const RegisterForm = () => {
                 Already have an account? <Link to="/login" sx={{ color: 'blue' }}>Login</Link>
             </Typography>
 
-            <TextField required label="Name" size="small" fullWidth value={name} onChange={(e) => { setName(e.target.value); clearError('name'); }} error={!!errors.name} helperText={errors.name || " "} />
-            <TextField required label="Email" type="email" name="email" size="small" fullWidth value={email} onChange={(e) => { setEmail(e.target.value); clearError('email'); }} error={!!errors.email} helperText={errors.email || " "} />
+            <TextField required label="Name" size="small"  value={name} onChange={(e) => { setName(e.target.value); clearError('name'); }} error={!!errors.name} helperText={errors.name || " "} />
+            <TextField required label="Email" type="email" name="email" size="small" value={email} onChange={(e) => { setEmail(e.target.value); clearError('email'); }} error={!!errors.email} helperText={errors.email || " "} />
 
             <TextField
                 required
