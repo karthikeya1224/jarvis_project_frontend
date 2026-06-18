@@ -1,0 +1,29 @@
+import Header from "../components/Header";
+import RegisterForm from "../components/RegisterForm";
+import { Box } from "@mui/material";
+import InfoPanel from "../components/InfoPanel";
+
+const RegisterUser = () => {
+    return(
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: '#F3F4F6',
+            height: '100vh',
+        }}>
+            <Header />
+            <Box sx={{
+                display: 'flex',
+                flexDirection: {xs: "column", sm: 'row'},
+                gap: 4,
+                py: {xs: 10,sm: 5.2},
+                background: "linear-gradient(160deg, #4338CA 0%, #3730A3 60%, #312E81 100%)"
+            }}>
+                <InfoPanel />
+                <RegisterForm />
+            </Box>
+        </Box>
+    )
+}
+
+export default RegisterUser
