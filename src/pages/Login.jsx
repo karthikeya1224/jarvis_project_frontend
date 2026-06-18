@@ -1,6 +1,6 @@
-import LoginFormView from "../Components/LoginFormView";
-import Header from "../Components/Header";
-import InfoPanel from "../Components/InfoPanel";
+import LoginFormView from "../components/LoginFormView";
+import Header from "../components/Header";
+import InfoPanel from "../components/InfoPanel";
 import { Box } from "@mui/material";
 
 const Login = () => {

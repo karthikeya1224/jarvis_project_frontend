@@ -1,7 +1,7 @@
-import Header from "../Components/Header";
-import RegisterForm from "../Components/RegisterForm";
+import Header from "../components/Header";
+import RegisterForm from "../components/RegisterForm";
 import { Box } from "@mui/material";
-import InfoPanel from "../Components/InfoPanel";
+import InfoPanel from "../components/InfoPanel";
 
 const RegisterUser = () => {
     return(

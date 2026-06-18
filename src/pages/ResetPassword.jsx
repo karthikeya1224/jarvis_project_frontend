@@ -1,5 +1,5 @@
-import ResetPasswordForm from "../Components/ResetPasswordForm";
-import Header from "../Components/Header";
+import ResetPasswordForm from "../components/ResetPasswordForm";
+import Header from "../components/Header";
 import { Box } from "@mui/material";
 
 const ResetPassword = () =>{
