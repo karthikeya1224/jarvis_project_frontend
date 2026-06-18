@@ -1,15 +1,19 @@
-import { Box, Typography, TextField, Button, IconButton, InputAdornment, Divider } from "@mui/material";
+import { Alert, Box, Typography, TextField, Button, IconButton, InputAdornment, Divider } from "@mui/material";
 import { useState } from "react";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useGoogleLogin } from '@react-oauth/google';
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 const RegisterForm = () => {
+    //Changing router
+    const navigate = useNavigate();
+
     //State variables for form fields
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
-    const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -29,7 +33,7 @@ const RegisterForm = () => {
     });
 
     //Form validation logic
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         const newErrors = {};
 
@@ -47,15 +51,8 @@ const RegisterForm = () => {
             newErrors.email = "Invalid email format";
         }
 
-        // Phone
-        if (phone.trim().length === 0) {
-            newErrors.phone = "Phone number is required";
-        } else if (!/^\d{10}$/.test(phone)) {
-            newErrors.phone = "Phone number must be 10 digits";
-        }
-
         // Password
-        if (password.trim().length === 0) {
+        if (password.length === 0) {
             newErrors.password = "Password is required";
         } else if (password.length < 8) {
             newErrors.password = "Password must be at least 8 characters long";
@@ -70,7 +67,7 @@ const RegisterForm = () => {
         }
 
         // Confirm password
-        if (confirmPassword.trim().length === 0) {
+        if (confirmPassword.length === 0) {
             newErrors.confirmPassword = "Please confirm your password";
         } else if (password !== confirmPassword) {
             newErrors.confirmPassword = "Passwords do not match";
@@ -82,8 +79,21 @@ const RegisterForm = () => {
             return;
         }
 
-        // ✅ All valid — call your API
-        console.log({ name, email, phone, password });
+        //Sending data to backend
+        try {
+            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/register`,
+                {
+                    "name": name,
+                    "email": email,
+                    "password": password,
+                }
+            )
+            if (response.status == 200 || response.status == 201) {
+                navigate("/dashboard");
+            }
+        } catch (error) {
+            setErrors({ form: error.response?.data?.message || "Registration failed. Please try again" })
+        }
     };
 
     // Clear specific field error when user changes the input
@@ -106,18 +116,19 @@ const RegisterForm = () => {
                 backgroundColor: '#FFFFFF',
             }}
         >
+            {errors.form && <Alert severity="error">{errors.form}</Alert>}
             <Typography variant="h5" sx={{ fontWeight: 600, mb: 1, textAlign: 'center', color: '#1E1B4B' }}>
                 Create account
             </Typography>
             <Typography variant="body2" sx={{ textAlign: 'center', mb: 2, mt: 1 }}>
-                Already have an account? <a href="/login" sx={{ color: 'blue' }}>Login</a>
+                Already have an account? <Link to="/login" sx={{ color: 'blue' }}>Login</Link>
             </Typography>
 
-            <TextField label="Name" size="small" fullWidth sx={{ color: '#9CA3AF' }} value={name} onChange={(e) => { setName(e.target.value); clearError('name'); }} error={!!errors.name} helperText={errors.name || " "} />
-            <TextField label="Email" type="email" name="email" size="small" fullWidth sx={{ color: '#9CA3AF' }} value={email} onChange={(e) => { setEmail(e.target.value); clearError('email'); }} error={!!errors.email} helperText={errors.email || " "} />
-            <TextField label="Phone number" type="tel" size="small" sx={{ color: '#9CA3AF' }} fullWidth value={phone} onChange={(e) => { setPhone(e.target.value.replace(/\D/g, '')); clearError('phone'); }} error={!!errors.phone} helperText={errors.phone || " "} />
+            <TextField required label="Name" size="small" fullWidth value={name} onChange={(e) => { setName(e.target.value); clearError('name'); }} error={!!errors.name} helperText={errors.name || " "} />
+            <TextField required label="Email" type="email" name="email" size="small" fullWidth value={email} onChange={(e) => { setEmail(e.target.value); clearError('email'); }} error={!!errors.email} helperText={errors.email || " "} />
 
             <TextField
+                required
                 label="Password"
                 type={showPassword ? 'text' : 'password'}
                 size="small"
@@ -140,6 +151,7 @@ const RegisterForm = () => {
             />
 
             <TextField
+                required
                 label="Confirm password"
                 type={showConfirmPassword ? 'text' : 'password'}
                 size="small"

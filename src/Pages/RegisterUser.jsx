@@ -16,7 +16,7 @@ const RegisterUser = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 gap: 4,
-                py: 2.35,
+                py: 5.2,
                 background: "linear-gradient(160deg, #4338CA 0%, #3730A3 60%, #312E81 100%)"
             }}>
                 <InfoPanel />

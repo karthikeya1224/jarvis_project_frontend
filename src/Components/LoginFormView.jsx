@@ -1,12 +1,17 @@
 // src/components/LoginFormView.js
 import React, { useState } from "react";
-import { Box, Card, TextField, Button, Typography, InputAdornment, IconButton, Link, Container, Divider } from '@mui/material';
+import { Box, Card, TextField, Button, Typography, InputAdornment, IconButton, Container, Alert, Divider } from '@mui/material';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useGoogleLogin } from '@react-oauth/google';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import axios from "axios";
+import { useNavigate, Link } from "react-router-dom";
 
 const LoginFormView = () => {
+  //Changing router
+  const navigate = useNavigate();
+
   //State variables for email and password
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -26,7 +31,7 @@ const LoginFormView = () => {
   });
 
   //Form validation logic
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const errors = {};
 
@@ -47,11 +52,24 @@ const LoginFormView = () => {
       setLoginErrors(errors);
       return;
     }
-  };
+
+    try{
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/login`,{
+        "email": loginEmail,
+        "password": loginPassword
+      })
+      if(response.status == 200 || response.status == 201){
+        navigate("/dashboard");
+      }
+    }
+    catch(error){
+      setLoginErrors({form: error.response?.data?.message || "Login failed, Please try again"})
+    }
+  }
 
   //Removing error message when user changes the input
   const closeError = (field) => {
-    setLoginErrors(prevErrors => ({ ...prevErrors, [field]: undefined }));
+    setLoginErrors(prevErrors => ({ ...prevErrors, [field]: undefined, form: undefined }));
   }
 
   return (
@@ -86,7 +104,7 @@ const LoginFormView = () => {
         >
           <b>Login to continue</b>
         </Typography>
-
+        {loginErrors.form && <Alert severity="error">{loginErrors.form}</Alert>}
         <Box component="form" sx={{ my: 2 }}>
           <TextField
             required
@@ -131,13 +149,13 @@ const LoginFormView = () => {
 
           <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 2 }}>
             <Link
-              href="/forgot-password"
+              to="/forgot-password"
               variant="body2"
               underline="hover"
             >
               Forgot Password?
             </Link>
-            <Link href="/register" variant="body2" underline="hover">
+            <Link to="/register" variant="body2" underline="hover">
               New User?
             </Link>
           </Box>
@@ -190,4 +208,4 @@ const LoginFormView = () => {
   );
 };
 
-export default LoginFormView;
+export default LoginFormView
